@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="/css/master.css">
+  </head>
+  <body>
+    <h1>This is my blog</h1>
+    <a href="/compose">Make a Post!</a>
+    {{#posts}}
+    <div class="blog_post">
+        <a href="{{id}}"><p class="title">{{title}}</p></a>
+        <p class="entry">{{text}}</p>
+    </div>
+    {{/posts}}
+    <script src="/js/client.js" charset="utf-8"></script>
+  </body>
+</html>
