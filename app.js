@@ -33,7 +33,7 @@ app.get('/compose', function(req, res){
 
 app.get('/:id', function(req, res){
   id = req.body.id
-  res.send('This worked')
+  res.render('')
 })
 
 app.post('/', function(req,res){
