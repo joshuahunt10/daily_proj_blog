@@ -10,19 +10,19 @@
         <li>{{message}}</li>
       {{/error}}
     </ul>
-    <form class="" action="/" method="post">
+    <form class="" action="/edit/{{id}}" method="post">
       <fieldset>
         <legend>Make a Post</legend>
         <div class="post_title">
           <label for="title">Title</label>
-          <input type="text" name="title" value="{{post.title}}">
+          <input type="text" name="title" value="{{title}}">
         </div>
         <div class="post_body">
           <label for="postbody">What's on your mind?</label>
-          <textarea name="postbody" rows="8" cols="80">{{post.text}}</textarea>
+          <textarea name="postbody" rows="8" cols="80">{{postbody}}</textarea>
         </div>
         <div class="submit_button">
-            <input type="submit" name="" value="Share!">
+            <input type="submit" name="" value="Submit Edit">
         </div>
       </fieldset>
     </form>

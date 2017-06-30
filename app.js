@@ -4,6 +4,7 @@ const mustache = require("mustache-express")
 const models = require("./models")
 const bodyParser = require("body-parser");
 
+
 app.engine('mustache', mustache());
 app.set('view engine', 'mustache');
 app.use(express.static('public'));
@@ -20,7 +21,11 @@ app.listen(3000, function(){
 })
 
 app.get('/', function(req, res){
-  models.blogs.findAll().then(function(posts){
+  models.blogs.findAll({
+    order:[
+      ['createdAt', 'DESCccom']
+    ]
+  }).then(function(posts){
     res.render('index', {
       posts: posts
     })
@@ -32,8 +37,43 @@ app.get('/compose', function(req, res){
 })
 
 app.get('/:id', function(req, res){
-  id = req.body.id
-  res.render('')
+  id = req.params.id
+  models.blogs.findOne({
+    where: {
+        id: id
+    }
+  }).then(function(posts){
+    res.render('blogLong', {
+      posts: posts,
+      id: id
+    })
+  })
+})
+
+app.get('/:id/edit', function(req, res){
+  id = req.params.id
+  models.blogs.findOne({
+    where: {
+      id: id
+    }
+  }).then(function(post){
+    res.render('edit', {
+      title: post.title,
+      postbody: post.text,
+      id: post.id
+    })
+  })
+})
+
+app.post('/:id/delete', function(req, res){
+  id = req.params.id
+  models.blogs.destroy({
+    where: {
+      id: id
+    }
+  }).then(function(){
+    res.redirect('/');
+  })
 })
 
 app.post('/', function(req,res){
@@ -45,5 +85,35 @@ app.post('/', function(req,res){
   })
   post.save().then(function(){
     res.redirect('/');
+  })
+  .catch(function(bigErrorObject){
+
+    res.render('compose', {
+      post: post,
+      error: bigErrorObject.errors
+    })
+  })
+})
+
+app.post('/edit/:id', function(req, res){
+  id = req.params.id;
+  models.blogs.findOne({
+    where: {
+      id: id
+    }
+  }).then(function(post){
+    post.title = req.body.title;
+    post.text = req.body.postbody;
+    post.save().then(function(){
+      res.redirect('/')
+    })
+    .catch(function(bigErrorObject){
+
+      res.render('edit/:id', {
+        postbody: post.text,
+        title: post.title,
+        error: bigErrorObject.errors
+      })
+    })
   })
 })
